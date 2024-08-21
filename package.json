@@ -52,7 +52,8 @@
     "redux": "^4.2.1",
     "simplebar-react": "^2.4.3",
     "svelte": "^4.2.18",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "vercel": "^36.0.0"
   },
   "devDependencies": {
     "@iconify/react": "^5.0.2",
