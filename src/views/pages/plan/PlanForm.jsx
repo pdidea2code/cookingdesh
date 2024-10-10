@@ -70,7 +70,7 @@ const PlanForm = () => {
       setIsUpdate(editData._id)
       setValue('duration', editData.duration)
       setValue('amount', editData.amount)
-      setValue('day', editData.days)
+      setValue('day', editData.day)
     }
   }, [])
   return (
