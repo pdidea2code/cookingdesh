@@ -61,10 +61,8 @@ const NutritionAdd = () => {
         recipeid: state.id,
       }))
 
-      console.log(transformedData)
       const response = await addNutrition(transformedData)
 
-      console.log('API Response:', response.data)
       toast.success('Data submitted successfully!')
       navigate('/Nutrition', { state: { id: state.id } })
     } catch (error) {
@@ -74,10 +72,6 @@ const NutritionAdd = () => {
       setIsLoading(false)
     }
   }
-
-  useEffect(() => {
-    console.log(state.id)
-  }, [])
 
   return (
     <>

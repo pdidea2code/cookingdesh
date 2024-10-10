@@ -1,51 +1,61 @@
 import { Button, Switch, IconButton } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import swal from 'sweetalert'
-import {
-  deleteMultipleIngredient,
-  deleteIngredient,
-  getAllIngredient,
-  updateIngredientStatus,
-} from 'src/redux/api/api'
+import axios from 'axios' // Import axios for API calls
+import { deleteMultiplePlan, deletePlan, getAllPlan, updatePlanStatus } from 'src/redux/api/api'
 
-const Ingredient = () => {
+const Plan = () => {
   const navigate = useNavigate()
-  const { state } = useLocation()
   const [dataTableData, setDataTable] = useState([])
 
-  const ingredientList = async () => {
+  const planList = async () => {
     try {
-      const res = await getAllIngredient(state.id)
-      // console.log(res.data.info)
-      const transformedData = res.data.info.map((ingredient) => ({
-        ...ingredient,
-        unitname: ingredient.unit == null ? '-' : ingredient.unit.name,
+      const res = await getAllPlan()
+      const transformedData = res.data.info.map((plan) => ({
+        ...plan,
+        status: Boolean(plan.status), // Ensure status is a boolean
       }))
       setDataTable(transformedData)
     } catch (err) {
       console.log(err)
-      if (!err.response.data.success) {
+      if (err.response && err.response.data && !err.response.data.success) {
         if (err.response.data.status === 401) {
           toast.error(err.response.data.message)
         } else {
-          toast.error(err.response.data, 'else')
+          toast.error(err.response.data.message || 'An unexpected error occurred.')
         }
+      } else {
+        toast.error('An unexpected error occurred.')
       }
     }
   }
 
   useEffect(() => {
-    ingredientList()
+    planList()
   }, [])
+
+  const handleStatusChange = async (status, _id) => {
+    const data = { id: _id, status: !status }
+    try {
+      await updatePlanStatus(data, _id)
+      toast.success('Status changed successfully!', { key: _id })
+      // Update the status directly in the state
+      setDataTable((prevData) =>
+        prevData.map((plan) => (plan._id === _id ? { ...plan, status: !status } : plan)),
+      )
+    } catch {
+      toast.error('Something went wrong!', { key: _id })
+    }
+  }
 
   const columns = [
     {
-      name: 'name',
-      label: 'Name',
+      name: 'duration',
+      label: 'Duration',
       options: {
         filter: true,
         sort: true,
@@ -53,18 +63,30 @@ const Ingredient = () => {
     },
     {
       name: 'amount',
-      label: 'Weight',
+      label: 'Amount',
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'unitname',
-      label: 'Unit',
+      name: 'day',
+      label: 'day',
       options: {
         filter: true,
         sort: true,
+      },
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: (_, { rowIndex }) => {
+          const { status, _id } = dataTableData[rowIndex]
+          return <Switch checked={status} onChange={() => handleStatusChange(status, _id)} />
+        },
       },
     },
     {
@@ -78,10 +100,7 @@ const Ingredient = () => {
                 className="editButton"
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
-
-                  navigate('/Ingredient-form', {
-                    state: { editData: editData },
-                  })
+                  navigate('/Plan-form', { state: { editData } })
                 }}
               />
               <Icons.DeleteRounded
@@ -89,22 +108,18 @@ const Ingredient = () => {
                 onClick={async () => {
                   const confirm = await swal({
                     title: 'Are you sure?',
-                    text: 'Are you sure you want to delete this ingredient? All related data will also be deleted.',
+                    text: 'Are you sure you want to delete this plan? All related data will also be deleted.',
                     icon: 'warning',
                     buttons: ['No, cancel it!', 'Yes, I am sure!'],
                     dangerMode: true,
                   })
                   if (confirm) {
                     try {
-                      await deleteIngredient(value)
-                      toast.success('Deleted successfully!', {
-                        key: value,
-                      })
-                      ingredientList()
+                      await deletePlan(value)
+                      toast.success('Deleted successfully!', { key: value })
+                      planList()
                     } catch {
-                      toast.error('Something went wrong!', {
-                        key: value,
-                      })
+                      toast.error('Something went wrong!', { key: value })
                     }
                   }
                 }}
@@ -121,7 +136,7 @@ const Ingredient = () => {
 
     const confirm = await swal({
       title: 'Are you sure?',
-      text: 'Are you sure that you want to delete the selected ingredients?',
+      text: 'Are you sure that you want to delete the selected plans?',
       icon: 'warning',
       buttons: ['No, cancel it!', 'Yes, I am sure!'],
       dangerMode: true,
@@ -129,15 +144,11 @@ const Ingredient = () => {
 
     if (confirm) {
       try {
-        await deleteMultipleIngredient(ids)
-        toast.success('Deleted successfully!', {
-          key: ids.join(','),
-        })
-        ingredientList()
+        await deleteMultiplePlan(ids)
+        toast.success('Deleted successfully!', { key: ids.join(',') })
+        planList()
       } catch {
-        toast.error('Something went wrong!', {
-          key: ids.join(','),
-        })
+        toast.error('Something went wrong!', { key: ids.join(',') })
       }
     }
   }
@@ -153,9 +164,7 @@ const Ingredient = () => {
   }
 
   const options = {
-    customToolbarSelect: (selectedRows, data) => (
-      <SelectedRowsToolbar selectedRows={selectedRows} data={data} columns={columns} />
-    ),
+    customToolbarSelect: (selectedRows) => <SelectedRowsToolbar selectedRows={selectedRows} />,
   }
 
   return (
@@ -166,19 +175,14 @@ const Ingredient = () => {
           variant="contained"
           size="medium"
           className="AddButton"
-          onClick={() => navigate('/Add-Ingredient', { state: { editData: state.id } })}
+          onClick={() => navigate('/Plan-form')}
         >
-          Add Ingredient
+          Add Plan
         </Button>
       </div>
-      <MUIDataTable
-        title={'Ingredient List'}
-        data={dataTableData}
-        columns={columns}
-        options={options}
-      />
+      <MUIDataTable title={'Plan List'} data={dataTableData} columns={columns} options={options} />
     </>
   )
 }
 
-export default Ingredient
+export default Plan

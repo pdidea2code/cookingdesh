@@ -95,12 +95,11 @@ const StepForm = () => {
 
   useEffect(() => {
     if (state && state.id) {
-      console.log(state.id)
       setRecipeId(state.id)
     }
     if (state && state.editData) {
       const { editData, imageUrl } = state
-      console.log(editData)
+
       setIsUpdate(editData._id)
       setValue('name', editData.name)
       setValue('stepno', editData.stepno)

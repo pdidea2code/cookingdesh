@@ -49,7 +49,7 @@ const Dashboard = () => {
     try {
       const res = await getUserCount()
       const data = res.data.info
-      console.log(data)
+
       setUserCount(data)
     } catch (error) {
       toast.error(error.message)

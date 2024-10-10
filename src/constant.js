@@ -1,4 +1,4 @@
-export const MAIN_URL = 'https://serverpre.vercel.app'
+export const MAIN_URL = 'https://cooking-pjj7.onrender.com'
 // const MAIN_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8002' : ''
 
 /* ---------------------------- ALL ADMIN API ---------------------------- */
@@ -275,6 +275,7 @@ export const GET_USER_COUNT_API = '/admin/dashboard/activedeactiveuser'
 
 /*  all user list */
 export const All_USER_LIST_API = '/admin/user/getuser'
+export const DELETE_USER_API = '/admin/user/deleteUser'
 
 /* ---------------------------- END User API ---------------------------- */
 
@@ -298,3 +299,18 @@ export const DELETE_MULTIPLE_NOTIFICATION_API = '/admin/notification/deletemulti
 export const UPDATE_NOTIFICATION_STATUS_API = '/admin/notification/updatenotificationstatus/'
 
 /* ---------------------------- END Notification API ---------------------------- */
+
+/* ---------------------------- ALL plan API ---------------------------- */
+
+export const GET_PLAN_API = '/admin/plan/getplan'
+export const ADD_PLAN_API = '/admin/plan/addplan'
+export const UPDATE_PLAN_API = '/admin/plan/updateplan/'
+export const UPDATE_STATUS_PLAN_API = '/admin/plan/updateplanstatus/'
+export const DELETE_PLAN_API = '/admin/plan/deleteplan/'
+
+/* ---------------------------- END plan API ---------------------------- */
+
+/* ---------------------------- ALL payment API ---------------------------- */
+export const GET_PAYMENT = '/admin/payment/getPayment'
+export const CHECK_SESSION = '/user/plan/complete?session_id='
+/* ---------------------------- END payment API ---------------------------- */

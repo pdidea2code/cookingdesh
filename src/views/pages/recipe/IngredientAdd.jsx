@@ -76,10 +76,8 @@ const IngredientAdd = () => {
         recipeid: state.editData,
       }))
 
-      console.log(transformedData)
       const response = await addIngredient(transformedData)
 
-      console.log('API Response:', response.data)
       toast.success('Data submitted successfully!')
       navigate('/Ingredient', { state: { id: state.editData } })
     } catch (error) {

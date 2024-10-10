@@ -48,7 +48,7 @@ const Diet = () => {
         sort: true,
       },
     },
-    
+
     {
       name: 'image',
       label: 'Image',
@@ -127,7 +127,7 @@ const Diet = () => {
                         toast.success('Deleted successfully!', {
                           key: value,
                         })
-                        console.log(value)
+
                         dietList()
                       })
                       .catch(() => {
@@ -159,7 +159,6 @@ const Diet = () => {
       // console.log(ids)
       deleteMultipleDiet(ids)
         .then(() => {
-          console.log(ids)
           dietList()
           toast.success('Deleted successfully!', {
             key: ids.join(','),

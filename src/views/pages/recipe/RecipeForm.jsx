@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -14,8 +14,8 @@ import {
   CSpinner,
   CFormSelect,
   CFormTextarea,
-} from '@coreui/react';
-import { useForm } from 'react-hook-form';
+} from '@coreui/react'
+import { useForm } from 'react-hook-form'
 import {
   addRecipe,
   getAllCategory,
@@ -24,10 +24,10 @@ import {
   getAllDiet,
   getAllCuisine,
   updateRecipe,
-} from 'src/redux/api/api';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+} from 'src/redux/api/api'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const RecipeForm = () => {
   const {
@@ -37,31 +37,31 @@ const RecipeForm = () => {
     handleSubmit,
     clearErrors,
     formState: { errors },
-  } = useForm();
+  } = useForm()
 
-  const navigate = useNavigate();
-  const [isUpdate, setIsUpdate] = useState('');
-  const [newUrl, setNewUrl] = useState('');
-  const [audioFile, setAudioFile] = useState('');
-  const [videoDiv, setVideoDiv] = useState(0);
-  const [videoFile, setVideoFile] = useState(null);
+  const navigate = useNavigate()
+  const [isUpdate, setIsUpdate] = useState('')
+  const [newUrl, setNewUrl] = useState('')
+  const [audioFile, setAudioFile] = useState('')
+  const [videoDiv, setVideoDiv] = useState(0)
+  const [videoFile, setVideoFile] = useState(null)
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [mealOptions, setMealOptions] = useState([]);
-  const [allergieOptions, setAllergieOptions] = useState([]);
-  const [dietOptions, setDietOptions] = useState([]);
-  const [cuisineOptions, setCuisineOptions] = useState([]);
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const { state } = useLocation();
+  const [isLoading, setIsLoading] = useState(false)
+  const [mealOptions, setMealOptions] = useState([])
+  const [allergieOptions, setAllergieOptions] = useState([])
+  const [dietOptions, setDietOptions] = useState([])
+  const [cuisineOptions, setCuisineOptions] = useState([])
+  const [categoryOptions, setCategoryOptions] = useState([])
+  const { state } = useLocation()
 
   const handleChange = (fieldName, fieldValue) => {
-    clearErrors(fieldName);
-    setValue(fieldName, fieldValue);
+    clearErrors(fieldName)
+    setValue(fieldName, fieldValue)
     if (fieldName === 'contentType') {
-      setVideoDiv(fieldValue);
+      setVideoDiv(fieldValue)
     }
-    console.log(fieldValue, fieldName);
-  };
+    
+  }
 
   const fetchData = async () => {
     try {
@@ -71,107 +71,107 @@ const RecipeForm = () => {
         getAllCuisine(),
         getAllDiet(),
         getAllCategory(),
-      ]);
-      setMealOptions(meals.data.info);
-      setAllergieOptions(allergies.data.info);
-      setCuisineOptions(cuisines.data.info);
-      setDietOptions(diets.data.info.diet);
-      setCategoryOptions(categories.data.info.category);
+      ])
+      setMealOptions(meals.data.info)
+      setAllergieOptions(allergies.data.info)
+      setCuisineOptions(cuisines.data.info)
+      setDietOptions(diets.data.info.diet)
+      setCategoryOptions(categories.data.info.category)
     } catch (err) {
-      toast.error('Failed to fetch data');
+      toast.error('Failed to fetch data')
     }
-  };
+  }
 
   const handleFileUpload = (e) => {
-    const files = e.target.files[0];
+    const files = e.target.files[0]
     if (files) {
-      const imageUrl = URL.createObjectURL(files);
-      console.log(imageUrl);
-      setNewUrl(imageUrl);
+      const imageUrl = URL.createObjectURL(files)
+      
+      setNewUrl(imageUrl)
     } else {
-      setNewUrl('');
+      setNewUrl('')
     }
-  };
+  }
 
   const handleAudioFileUpload = (e) => {
-    const audioFiles = e.target.files[0];
+    const audioFiles = e.target.files[0]
     if (audioFiles) {
-      const audioUrl = URL.createObjectURL(audioFiles);
-      setAudioFile(audioUrl);
+      const audioUrl = URL.createObjectURL(audioFiles)
+      setAudioFile(audioUrl)
     } else {
-      setAudioFile('');
+      setAudioFile('')
     }
-  };
+  }
 
   const handleVideoChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     // Check if the selected file is an mp4 video
     if (file && file.type === 'video/mp4') {
-      const vedioUrl = URL.createObjectURL(file);
-      setVideoFile(vedioUrl);
+      const vedioUrl = URL.createObjectURL(file)
+      setVideoFile(vedioUrl)
     } else {
-      e.target.value = null;
-      toast.error('Invalid video type. Only mp4 files are allowed.');
+      e.target.value = null
+      toast.error('Invalid video type. Only mp4 files are allowed.')
     }
-  };
+  }
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
-    const formData = new FormData(); // formdata object
+    setIsLoading(true)
+    const formData = new FormData() // formdata object
     Object.keys(data).forEach(function (key) {
       if (key === 'image' || key === 'video' || key === 'audio') {
         if (data[key][0] !== undefined) {
-          formData.append(key, data[key][0]);
+          formData.append(key, data[key][0])
         }
       } else {
-        formData.append(key, data[key]);
+        formData.append(key, data[key])
       }
-    });
+    })
 
     try {
       if (isUpdate === '') {
-        console.log(formData)
-        await addRecipe(formData);
-        toast.success('Recipe added successfully');
+        
+        await addRecipe(formData)
+        toast.success('Recipe added successfully')
       } else {
-        await updateRecipe(formData, isUpdate);
-        toast.success('Recipe updated successfully');
+        await updateRecipe(formData, isUpdate)
+        toast.success('Recipe updated successfully')
       }
-      navigate('/recipe');
+      navigate('/recipe')
     } catch (err) {
-      toast.error('Error processing request');
+      toast.error('Error processing request')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
     if (state) {
-      const { editData, imageUrl } = state;
-      console.log(editData)
-      setIsUpdate(editData._id);
-      setValue('title', editData.title);
-      setValue('time', editData.time);
-      setValue('description', editData.description);
-      setValue('meal', editData.meal);
-      setValue('diet', editData.diet);
-      setValue('cuisine', editData.cuisine);
-      setValue('allergie', editData.allergie);
-      setValue('category', editData.category);
+      const { editData, imageUrl } = state
+     
+      setIsUpdate(editData._id)
+      setValue('title', editData.title)
+      setValue('time', editData.time)
+      setValue('description', editData.description)
+      setValue('meal', editData.meal)
+      setValue('diet', editData.diet)
+      setValue('cuisine', editData.cuisine)
+      setValue('allergie', editData.allergie)
+      setValue('category', editData.category)
 
-      setNewUrl(imageUrl + editData.image);
+      setNewUrl(imageUrl + editData.image)
       // setVideoDiv(0);
-      if(editData.videotype == "0"){
-        setValue("videourl" , editData.videourl);
-        setVideoDiv(0);
-      }else{
-        setVideoDiv(1);
-        setVideoFile(imageUrl + editData.video);
+      if (editData.videotype == '0') {
+        setValue('videourl', editData.videourl)
+        setVideoDiv(0)
+      } else {
+        setVideoDiv(1)
+        setVideoFile(imageUrl + editData.video)
       }
-      setAudioFile(imageUrl + editData.audio);
+      setAudioFile(imageUrl + editData.audio)
     }
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   return (
     <div className="bg-light min-vh-100">
@@ -333,9 +333,7 @@ const RecipeForm = () => {
                       placeholder="Description"
                       invalid={!!errors.description}
                     />
-                    <CFormFeedback invalid>
-                      {errors.description?.message}
-                    </CFormFeedback>
+                    <CFormFeedback invalid>{errors.description?.message}</CFormFeedback>
                   </CCol>
                   {/* end description field */}
                   {/* recipe image field */}
@@ -461,9 +459,7 @@ const RecipeForm = () => {
                         placeholder="Enter video link"
                         invalid={!!errors.videoUrl}
                       />
-                      <CFormFeedback invalid>
-                        {errors.videoUrl?.message}
-                      </CFormFeedback>
+                      <CFormFeedback invalid>{errors.videoUrl?.message}</CFormFeedback>
                     </CCol>
                   )}
                   {/* end Video field */}
@@ -474,10 +470,10 @@ const RecipeForm = () => {
                         <>
                           <CSpinner size="sm" /> Please Wait
                         </>
+                      ) : isUpdate ? (
+                        'Update Recipe'
                       ) : (
-                        isUpdate
-                          ? 'Update Recipe'
-                          : 'Add Recipe'
+                        'Add Recipe'
                       )}
                     </CButton>
                   </CCol>
@@ -488,7 +484,7 @@ const RecipeForm = () => {
         </CRow>
       </CContainer>
     </div>
-  );
-};
+  )
+}
 
-export default RecipeForm;
+export default RecipeForm

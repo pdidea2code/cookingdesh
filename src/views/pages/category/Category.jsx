@@ -53,7 +53,7 @@ const Category = () => {
         sort: true,
       },
     },
-   
+
     {
       name: 'image',
       label: 'Image',
@@ -111,7 +111,6 @@ const Category = () => {
               <Icons.EditRounded
                 className="editButton"
                 onClick={() => {
-                  console.log(dataTableData)
                   const editData = dataTableData.find((data) => data._id === value)
                   navigate('/Category-form', { state: { editData: editData, imageUrl: baseUrl } })
                 }}
@@ -132,7 +131,7 @@ const Category = () => {
                         toast.success('Deleted successfully!', {
                           key: value,
                         })
-                        console.log(value)
+
                         categoryList()
                       })
                       .catch(() => {
@@ -164,7 +163,6 @@ const Category = () => {
       // console.log(ids)
       deleteMultipleCategory(ids)
         .then(() => {
-          console.log(ids)
           categoryList()
           toast.success('Deleted successfully!', {
             key: ids.join(','),

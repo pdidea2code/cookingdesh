@@ -30,6 +30,9 @@ const Step = React.lazy(() => import('./views/pages/recipe/step/Step'))
 const StepForm = React.lazy(() => import('./views/pages/recipe/step/StepForm'))
 const CuisineForm = React.lazy(() => import('./views/pages/cuisine/CuisineForm'))
 const User = React.lazy(() => import('./views/pages/user/User'))
+const Plan = React.lazy(() => import('./views/pages/plan/Plan'))
+const PlanForm = React.lazy(() => import('./views/pages/plan/PlanForm'))
+const Payment = React.lazy(() => import('./views/pages/payment/Payment'))
 
 const TermsConditions = React.lazy(() => import('./views/pages/setting/TermsConditions'))
 const Privacypolicy = React.lazy(() => import('./views/pages/setting/PrivacyPolicy'))
@@ -75,6 +78,9 @@ const routes = [
   { path: '/TermsConditions', name: 'TermsConditions', element: TermsConditions },
   { path: '/Privacypolicy', name: 'Privacypolicy', element: Privacypolicy },
   { path: '/Notification-form', name: 'Notification-form', element: NotificationForm },
+  { path: '/Plan', name: 'Plan', element: Plan },
+  { path: '/Plan-form', name: 'PlanForm', element: PlanForm },
+  { path: '/Payment', name: 'Payment', element: Payment },
 ]
 
 export default routes

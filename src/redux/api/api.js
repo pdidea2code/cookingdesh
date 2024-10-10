@@ -84,6 +84,14 @@ import {
   GET_DESHBORD_DOUNT,
   GET_RECINT_RECIPE_API,
   GET_USER_COUNT_API,
+  DELETE_USER_API,
+  ADD_PLAN_API,
+  DELETE_PLAN_API,
+  UPDATE_PLAN_API,
+  UPDATE_STATUS_PLAN_API,
+  GET_PLAN_API,
+  GET_PAYMENT,
+  CHECK_SESSION,
 } from 'src/constant'
 // export const MAIN_url = 'http://localhost:8002'
 
@@ -99,7 +107,6 @@ axios.interceptors.response.use(
       // window.location.reload()
       try {
         const refreshToken = Cookies.get('refreshToken')
-        console.log(refreshToken)
 
         const res = await axios.post(`${MAIN_URL}/admin/refreshtoken`, { refreshToken })
 
@@ -641,6 +648,10 @@ export const getAllUser = () =>
   axios.get(MAIN_URL + All_USER_LIST_API, {
     headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
   })
+export const deleteUser = (data) =>
+  axios.post(MAIN_URL + DELETE_USER_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
 
 /* ---------------------------- END User API ---------------------------- */
 
@@ -685,3 +696,54 @@ export const updateNotificationStatus = (status, id) =>
       headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
     },
   )
+
+/* ---------------------------- ALL PLAN API ---------------------------- */
+
+/** add Meal */
+export const addPlan = (data) =>
+  axios.post(MAIN_URL + ADD_PLAN_API, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete Meal */
+export const deletePlan = (id) =>
+  axios.delete(MAIN_URL + DELETE_PLAN_API + id, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* update Meal  */
+export const updatePlan = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_PLAN_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+/* update Meal STATUS  */
+export const updatePlanStatus = (data, id) =>
+  axios.put(MAIN_URL + UPDATE_STATUS_PLAN_API + id, data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* delete MULTIPLE Meal  */
+export const deleteMultiplePlan = (data) =>
+  axios.delete(MAIN_URL + DELETE_PLAN_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+    data: { ids: data },
+  })
+
+/* Get All Meal  */
+export const getAllPlan = () =>
+  axios.get(MAIN_URL + GET_PLAN_API, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* ---------------------------- END MEAL API ---------------------------- */
+/* ---------------------------- ALL Payment API ---------------------------- */
+export const getAllPayment = () =>
+  axios.get(MAIN_URL + GET_PAYMENT, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+export const checkSession = (data) =>
+  axios.get(MAIN_URL + CHECK_SESSION + data, {
+    headers: { Authorization: `Bearer ${Cookies.get('accessToken')}` },
+  })
+
+/* ---------------------------- END Paymet API ---------------------------- */

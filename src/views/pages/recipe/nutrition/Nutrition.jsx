@@ -11,7 +11,6 @@ const Nutrition = () => {
   const navigate = useNavigate()
   const { state } = useLocation()
   const [dataTableData, setDataTable] = useState([])
-  console.log('NutState' + state.id)
 
   const nutritionList = async () => {
     try {
@@ -67,7 +66,7 @@ const Nutrition = () => {
                 className="editButton"
                 onClick={() => {
                   const editData = dataTableData.find((data) => data._id === value)
-                  console.log(editData)
+
                   navigate('/Nutrition-form', {
                     state: { editData: editData },
                   })

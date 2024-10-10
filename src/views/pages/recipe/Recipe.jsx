@@ -267,7 +267,6 @@ const Recipe = () => {
     if (confirm) {
       deleteMultipleRecipe(ids)
         .then(() => {
-          console.log(ids)
           recipeList()
           toast.success('Deleted successfully!', {
             key: ids.join(','),

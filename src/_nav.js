@@ -81,6 +81,18 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Plan',
+    to: '/Plan',
+    icon: <CImage src={recipe} className="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Payment',
+    to: '/Payment',
+    icon: <CImage src={recipe} className="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Comments',
     to: '/Comment',
     icon: <CImage src={comment} className="nav-icon" />,

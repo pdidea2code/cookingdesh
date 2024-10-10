@@ -66,7 +66,7 @@ const MealForm = () => {
   useEffect(() => {
     if (state) {
       const { editData } = state
-      console.log(editData)
+    
       setIsUpdate(editData._id)
       setValue('name', editData.name)
     }

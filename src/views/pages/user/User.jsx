@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Icons from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
-import { getAllUser } from 'src/redux/api/api'
+import { deleteUser, getAllUser } from 'src/redux/api/api'
 import swal from 'sweetalert'
 import defaultImg from '../../../../src/assets/images/default.png'
 
@@ -77,6 +77,46 @@ const User = () => {
               style={{ height: '50px', width: '50px', borderRadius: '50%' }}
             />
           ),
+      },
+    },
+    {
+      name: '_id',
+      label: 'Action',
+      options: {
+        customBodyRender: (value) => (
+          <Icons.DeleteRounded
+            className="deleteButton"
+            onClick={async () => {
+              const confirm = await swal({
+                title: 'Are you sure?',
+                text: 'Are you sure? Want to delete User?',
+                icon: 'warning',
+                buttons: ['No, cancel it!', 'Yes, I am sure!'],
+                dangerMode: true,
+              })
+              if (confirm) {
+                const data = {
+                  id: value,
+                }
+                deleteUser(data)
+                  .then(() => {
+                    list()
+                    toast.success('Deleted successfully!')
+                    // swal({
+                    //   title: 'Deleted successfully!',
+                    //   icon: 'success',
+                    //   button: 'close',
+                    // })
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    const errorMsg = error.response?.data?.message || 'Something went wrong'
+                    toast.error(errorMsg)
+                  })
+              }
+            }}
+          />
+        ),
       },
     },
   ]

@@ -18,9 +18,9 @@ import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { addCuisine, updateCuisine } from 'src/redux/api/api'
+import { addPlan, updatePlan } from 'src/redux/api/api'
 
-const CuisineForm = () => {
+const PlanForm = () => {
   const {
     register,
     getValues,
@@ -39,9 +39,9 @@ const CuisineForm = () => {
   }
   const onSubmit = (data) => {
     isUpdate === ''
-      ? addCuisine(data)
+      ? addPlan(data)
           .then((res) => {
-            navigate('/cuisine')
+            navigate('/plan')
           })
           .catch((err) => {
             if (!err.response.data.success) {
@@ -50,9 +50,9 @@ const CuisineForm = () => {
               setIsLoading(false)
             }
           })
-      : updateCuisine(data, isUpdate)
+      : updatePlan(data, isUpdate)
           .then((res) => {
-            navigate('/cuisine')
+            navigate('/plan')
           })
           .catch((err) => {
             if (!err.response.data.success) {
@@ -68,7 +68,9 @@ const CuisineForm = () => {
       const { editData } = state
 
       setIsUpdate(editData._id)
-      setValue('name', editData.name)
+      setValue('duration', editData.duration)
+      setValue('amount', editData.amount)
+      setValue('day', editData.days)
     }
   }, [])
   return (
@@ -78,23 +80,49 @@ const CuisineForm = () => {
           <CCol md={8}>
             <CCard>
               <CCardHeader>
-                <strong>Cuisine Form</strong>
+                <strong>Plan Form</strong>
               </CCardHeader>
               <CCardBody>
                 <ToastContainer />
                 <CForm className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
                   <CCol xl={6} md={12}>
-                    <CFormLabel>Cuisine</CFormLabel>
+                    <CFormLabel>Duration</CFormLabel>
                     <CFormInput
                       type="text"
                       id="validationDefault01"
-                      {...register('name', {
-                        required: 'Cuisine is required',
+                      {...register('duration', {
+                        required: 'Duration is required',
                       })}
-                      placeholder="cuisine name"
-                      invalid={!!errors.name}
+                      placeholder=" Duration"
+                      invalid={!!errors.duration}
                     />
-                    <CFormFeedback invalid>Cuisine is required</CFormFeedback>
+                    <CFormFeedback invalid>Duration is required</CFormFeedback>
+                  </CCol>
+                  <CCol xl={6} md={12}>
+                    <CFormLabel>Amount</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      id="validationDefault01"
+                      {...register('amount', {
+                        required: 'Amount is required',
+                      })}
+                      placeholder="Plan Amount"
+                      invalid={!!errors.amount}
+                    />
+                    <CFormFeedback invalid>Amount is required</CFormFeedback>
+                  </CCol>
+                  <CCol xl={6} md={12}>
+                    <CFormLabel>Day</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      id="validationDefault01"
+                      {...register('day', {
+                        required: 'day is required',
+                      })}
+                      placeholder="Day"
+                      invalid={!!errors.amount}
+                    />
+                    <CFormFeedback invalid>Day is required</CFormFeedback>
                   </CCol>
                   <CCol xl={6} md={12} className="text-center submitButton">
                     {isLoading ? (
@@ -118,4 +146,4 @@ const CuisineForm = () => {
   )
 }
 
-export default CuisineForm
+export default PlanForm

@@ -43,13 +43,10 @@ const EditProfile = () => {
     let formData = new FormData()
     Object.keys(data).forEach(function (key) {
       if (key === 'image') {
-        console.log(data[key])
         if (data[key][0] !== undefined) {
           formData.append(key, data[key][0])
         }
       } else {
-        console.log(data[key])
-
         formData.append(key, data[key])
       }
     })

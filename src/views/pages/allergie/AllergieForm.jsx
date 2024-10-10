@@ -35,7 +35,7 @@ const AllergieForm = () => {
   const { state } = useLocation()
   const handleChange = async (fieldName, fieldValue) => {
     clearErrors(fieldName, fieldValue)
-      setValue(fieldName, fieldValue)
+    setValue(fieldName, fieldValue)
   }
   const onSubmit = (data) => {
     isUpdate === ''
@@ -66,7 +66,7 @@ const AllergieForm = () => {
   useEffect(() => {
     if (state) {
       const { editData } = state
-      console.log(editData)
+
       setIsUpdate(editData._id)
       setValue('name', editData.name)
     }

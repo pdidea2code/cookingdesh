@@ -36,7 +36,6 @@ const Step = () => {
   }
 
   useEffect(() => {
-    console.log(state)
     fetchSteps()
   }, [])
 
