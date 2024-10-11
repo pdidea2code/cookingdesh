@@ -1,4 +1,4 @@
-export const MAIN_URL = 'https://cooking-pjj7.onrender.com'
+export const MAIN_URL = 'http://localhost:5008'
 // const MAIN_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8002' : ''
 
 /* ---------------------------- ALL ADMIN API ---------------------------- */
